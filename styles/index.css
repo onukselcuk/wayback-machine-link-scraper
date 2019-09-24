@@ -1,0 +1,116 @@
+body {
+	background-color: #2f3542;
+}
+
+.main {
+	display: flex;
+	align-items: center;
+	justify-content: start;
+}
+.boxes {
+	margin: 1rem;
+}
+.domains__div {
+	width: 500px;
+	display: flex;
+	flex-direction: column;
+}
+.boxes__button {
+	align-self: center;
+	margin: 0.5rem 0;
+	margin-right: 1rem;
+	padding: .7rem 2rem;
+	border: none;
+	outline: none;
+	transition: all 0.1s;
+	cursor: pointer;
+	border-radius: 5px;
+	font: inherit;
+}
+.boxes__button:hover {
+	transform: scale(1.05);
+	color: white;
+}
+
+.boxes__button[disabled]:hover {
+	transform: none;
+}
+
+.boxes__button:active {
+	transform: scale(0.95);
+}
+
+.results__div {
+	width: 500px;
+}
+
+#domains {
+	resize: none;
+	font-family: inherit;
+	background-color: #40485a;
+	color: white;
+	border: none;
+}
+
+.number {
+	margin-top: 1rem;
+}
+
+.progress {
+	margin-top: 1rem;
+}
+
+.navbar {
+	background-color: #40485a;
+	display: flex;
+	align-items: center;
+}
+
+.btn {
+	background-color: #40485a;
+	color: white;
+}
+
+.progress-bar {
+	background-color: #40485a;
+	color: white;
+}
+
+.logo {
+	line-height: 0;
+	margin-top: .4rem;
+	font-size: 0;
+	height: 40px;
+	width: 150px;
+	background-size: contain;
+	background-image: url("../wayback_machine_logo.svg");
+	background-repeat: no-repeat;
+}
+
+.navbar-brand {
+	cursor: default;
+}
+
+#inputState {
+	background-color: #40485a;
+	color: white;
+}
+
+.completion {
+	color: white;
+}
+
+.marked-text--idle {
+	background-color: blue;
+}
+.marked-text--red {
+	background-color: rgb(214, 68, 68);
+}
+
+.marked-text--green {
+	background-color: rgb(19, 185, 19);
+}
+
+.stop--disabled {
+	cursor: not-allowed !important;
+}
