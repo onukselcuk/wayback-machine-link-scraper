@@ -17,6 +17,9 @@ let resultsArr = [];
 let yearsFrom, yearsTo, speed, limit, timestamp, inputState;
 let idx = 0;
 let timeOutIds = [];
+let proxiesArr = [];
+let proxiesArrIndex = 0;
+let proxyChecked = false;
 
 //Listen for the app to be ready
 
@@ -24,7 +27,7 @@ app.on("ready", function () {
 	//create new window
 	mainWindow = new BrowserWindow({
 		width: 1100,
-		height: 800,
+		height: 850,
 		webPreferences: {
 			nodeIntegration: true
 		}
@@ -83,6 +86,9 @@ ipcMain.on("item:add", function (e, item) {
 
 ipcMain.on("domain:send", function (e, formValues) {
 	idx = 0;
+	proxiesArr = [];
+	proxiesArrIndex = 0;
+	proxyChecked = false;
 	yearsFrom = formValues.yearsFrom;
 	yearsTo = formValues.yearsTo;
 	speed = formValues.speed;
@@ -90,6 +96,26 @@ ipcMain.on("domain:send", function (e, formValues) {
 	timestamp = formValues.timestamp;
 	inputState = formValues.inputState;
 	domainList = formValues.domainLis;
+	if (formValues.proxyChecked) {
+		proxyChecked = true;
+		proxiesArr = formValues.proxyList.split("\n");
+		proxiesArr = proxiesArr.map((proxy) => {
+			const newSplit = proxy.split(":");
+			if (newSplit[2]) {
+				return {
+					hostName: newSplit[0],
+					portNumber: newSplit[1],
+					userName: newSplit[2],
+					password: newSplit[3]
+				};
+			} else {
+				return {
+					hostName: newSplit[0],
+					portNumber: newSplit[1]
+				};
+			}
+		});
+	}
 	if (domainList.length > 0) {
 		domainList = domainList.split("\n");
 		mainWindow.webContents.send("list:length", domainList.length);
@@ -132,8 +158,31 @@ function test (i) {
 	"-"
 		? "-"
 		: ""}${limit}`;
+	let config = {};
+	if (proxyChecked) {
+		const proxyObj = proxiesArr[proxiesArrIndex];
+		if (proxyObj.userName !== undefined) {
+			config = {
+				proxy: {
+					host: proxyObj.hostName,
+					port: proxyObj.portNumber,
+					auth: {
+						username: proxyObj.userName,
+						password: proxyObj.password
+					}
+				}
+			};
+		} else {
+			config = {
+				proxy: {
+					host: proxyObj.hostName,
+					port: proxyObj.portNumber
+				}
+			};
+		}
+	}
 	axios
-		.get(urlString)
+		.get(urlString, config)
 		.then((res) => {
 			res.data.forEach((cur, index) => {
 				if (index !== 0 && res.data.length > 0) {
@@ -144,6 +193,10 @@ function test (i) {
 		})
 		.then(() => {
 			idx++;
+			proxiesArrIndex++;
+			if (proxiesArrIndex === proxiesArr.length - 1) {
+				proxiesArrIndex = 0;
+			}
 			const numberText = idx;
 			mainWindow.webContents.send("result:number", numberText);
 		})

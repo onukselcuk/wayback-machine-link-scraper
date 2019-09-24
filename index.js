@@ -21,6 +21,8 @@ const speed = document.querySelector(".speed");
 const limit = document.querySelector(".limit");
 const timestamp = document.querySelector(".timestamp");
 const inputState = document.querySelector("#inputState");
+const proxies = document.querySelector("#proxies");
+const proxyCheckBox = document.querySelector(".proxy-checkbox");
 let numOfErrors = 0;
 
 yearsFrom.defaultValue = 2015;
@@ -62,6 +64,12 @@ scrapeButton.addEventListener("click", function (e) {
 		inputState: inputState.value,
 		domainLis
 	};
+	if (proxyCheckBox.checked) {
+		formValues.proxyChecked = true;
+		formValues.proxyList = proxies.value;
+	} else {
+		formValues.proxyChecked = false;
+	}
 	ipcRenderer.send("domain:send", formValues);
 	progressBar.classList.add("progress-bar-animated");
 });

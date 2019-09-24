@@ -44,7 +44,8 @@ body {
 	width: 500px;
 }
 
-#domains {
+#domains,
+#proxies {
 	resize: none;
 	font-family: inherit;
 	background-color: #40485a;
