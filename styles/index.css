@@ -106,18 +106,18 @@ body {
 }
 
 .marked-text--idle {
-	background-color: blue;
+	background-color: #0a3d62;
 }
 .marked-text--red {
-	background-color: rgb(214, 68, 68);
+	background-color: #b71540;
 }
 
 .marked-text--green {
-	background-color: rgb(19, 185, 19);
+	background-color: #079992;
 }
 
 .marked-text--yellow {
-	background-color: rgb(192, 192, 28);
+	background-color: #fa983a;
 }
 
 .stop--disabled {
