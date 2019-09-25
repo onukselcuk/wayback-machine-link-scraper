@@ -18,14 +18,14 @@
     <div class="main">
         <div class="boxes  domains__div">
             <div class="form-group">
-                <label style="color:white" for="domains">Domains List</label>
-                <textarea name="domains" id="domains" class="form-control" cols="40" rows="14"
+                <label style="color:white" for="domains">Domain List</label>
+                <textarea name="domains" id="domains" class="form-control" cols="40" rows="13"
                     placeholder="amazon.com\ngoogle.com\nyoutube.com\ntwitter.com"></textarea>
             </div>
             <div class="form-group">
-                <label style="color:white" for="proxies">Proxies List</label>
-                <textarea name="proxies" id="proxies" class="form-control" cols="40" rows="8"
-                    placeholder="amazon.com\ngoogle.com\nyoutube.com\ntwitter.com"></textarea>
+                <label style="color:white" for="proxies">Proxy List</label>
+                <textarea name="proxies" id="proxies" class="form-control" cols="40" rows="9"
+                    placeholder="Format for private proxies => ip:port:username:password\n178.151.205.154:3128:mike:123\n178.151.205.155:3128:mike:123\nFormat for public proxies => ip:port\n85.90.163.242:53281\n43.113.67.1:8080\nMake sure public proxy is working before using it or you will get errors. You can use public and private proxies at the same time"></textarea>
             </div>
             <div class="custom-control custom-checkbox my-1 mr-sm-2">
                 <input type="checkbox" class="custom-control-input proxy-checkbox" id="customControlInline">
@@ -72,11 +72,12 @@
                 <div class="progress-bar progress-bar-striped" id="progress-bar" role="progressbar" style="width: 0%"
                     aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
             </div>
-            <p style="color:white" class="number">Total Number of Domains Completed: 0</p>
+            <p style="color:white" class="info  total-domain-number">Total Number of Domains : 0</p>
+            <p style="color:white" class="info number">Total Number of Domains Completed: 0</p>
 
-            <p style="color:white" class="error">Total Number of Errors: 0</p>
+            <p style="color:white" class="info error">Total Number of Errors: 0</p>
 
-            <p style="color:white">Progress Completed: <mark class="marked-text marked-text--idle"><span
+            <p style="color:white" class="info">Process Completed: <mark class="marked-text marked-text--idle"><span
                         class="completion">Not
                         Running</span></mark></p>
 

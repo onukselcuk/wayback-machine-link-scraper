@@ -208,6 +208,7 @@ function test (i) {
 function scrape () {
 	resultsArr = [];
 	timeOutIds = [];
+	mainWindow.webContents.send("domain:number", domainList.length);
 	for (let i = 0; i < domainList.length; i++) {
 		(function (i) {
 			const timeOutId = setTimeout(function () {
@@ -222,6 +223,7 @@ function stopScraping () {
 	timeOutIds.forEach((cur) => {
 		clearTimeout(cur);
 	});
+	mainWindow.webContents.send("scrape:stopped");
 }
 
 //Create menu template

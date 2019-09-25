@@ -23,6 +23,7 @@ const timestamp = document.querySelector(".timestamp");
 const inputState = document.querySelector("#inputState");
 const proxies = document.querySelector("#proxies");
 const proxyCheckBox = document.querySelector(".proxy-checkbox");
+const totalDomain = document.querySelector(".total-domain-number");
 let numOfErrors = 0;
 
 yearsFrom.defaultValue = 2015;
@@ -34,6 +35,7 @@ timestamp.defaultValue = 6;
 let arrayLength = 0;
 
 domains.placeholder = domains.placeholder.replace(/\\n/g, "\n");
+proxies.placeholder = proxies.placeholder.replace(/\\n/g, "\n");
 labels.forEach((cur) => {
 	cur.style.color = "white";
 });
@@ -50,6 +52,7 @@ scrapeButton.addEventListener("click", function (e) {
 	error.textContent = `Total Number of Errors: ${numOfErrors}`;
 	markedText.classList.remove("marked-text--idle");
 	markedText.classList.remove("marked-text--green");
+	markedText.classList.remove("marked-text--yellow");
 	markedText.classList.add("marked-text--red");
 	completion.textContent = "No";
 	stopButton.disabled = false;
@@ -100,6 +103,7 @@ resetButton.addEventListener("click", function (e) {
 
 stopButton.addEventListener("click", function (e) {
 	if (completion.textContent === "No") {
+		completion.textContent = "Stopping";
 		ipcRenderer.send("scrape:stop");
 		progressBar.classList.remove("progress-bar-animated");
 		stopButton.disabled = true;
@@ -117,6 +121,7 @@ ipcRenderer.on("result:number", function (e, numberText) {
 	progressBar.style.width = `${ratio}%`;
 	number.textContent = `Total Number of Domains Completed: ${numberText}`;
 	if (ratio === 100) {
+		progressBar.textContent = "Completed";
 		progressBar.classList.remove("progress-bar-animated");
 		markedText.classList.remove("marked-text--red");
 		markedText.classList.add("marked-text--green");
@@ -130,6 +135,10 @@ ipcRenderer.on("file:save", function (e) {
 	alert("File Saved to Disk Successfully");
 });
 
+ipcRenderer.on("domain:number", function (e, totalDomainNumber) {
+	totalDomain.textContent = `Total Number of Domains : ${totalDomainNumber}`;
+});
+
 ipcRenderer.on("file:notSaved", function (e) {
 	alert("File could not be saved. Please try saving again.");
 });
@@ -141,4 +150,11 @@ ipcRenderer.on("list:error", function (e) {
 ipcRenderer.on("result:error", function (e) {
 	numOfErrors++;
 	error.textContent = `Total Number of Errors: ${numOfErrors}`;
+});
+
+ipcRenderer.on("scrape:stopped", function (e) {
+	markedText.classList.remove("marked-text--red");
+	markedText.classList.remove("marked-text--green");
+	markedText.classList.add("marked-text--yellow");
+	completion.textContent = "Stopped";
 });
