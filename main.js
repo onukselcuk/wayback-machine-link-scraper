@@ -151,7 +151,7 @@ ipcMain.on("scrape:stop", function (e) {
 	stopScraping();
 });
 
-function test (i) {
+async function test (i, indexP) {
 	let urlString = `http://web.archive.org/cdx/search/cdx?url=${domainList[
 		i
 	]}&output=json&from=${yearsFrom}&to=${yearsTo}&fl=timestamp,original&collapse=timestamp:${timestamp}&filter=statuscode:200&limit=${inputState ==
@@ -160,7 +160,7 @@ function test (i) {
 		: ""}${limit}`;
 	let config = {};
 	if (proxyChecked) {
-		const proxyObj = proxiesArr[proxiesArrIndex];
+		const proxyObj = proxiesArr[indexP];
 		if (proxyObj.userName !== undefined) {
 			config = {
 				proxy: {
@@ -181,6 +181,9 @@ function test (i) {
 			};
 		}
 	}
+
+	console.log(config.proxy.host);
+
 	axios
 		.get(urlString, config)
 		.then((res) => {
@@ -193,14 +196,13 @@ function test (i) {
 		})
 		.then(() => {
 			idx++;
-			proxiesArrIndex++;
-			if (proxiesArrIndex === proxiesArr.length - 1) {
-				proxiesArrIndex = 0;
-			}
 			const numberText = idx;
 			mainWindow.webContents.send("result:number", numberText);
 		})
 		.catch((e) => {
+			idx++;
+			const numberText = idx;
+			mainWindow.webContents.send("result:number", numberText);
 			mainWindow.webContents.send("result:error");
 		});
 }
@@ -210,12 +212,16 @@ function scrape () {
 	timeOutIds = [];
 	mainWindow.webContents.send("domain:number", domainList.length);
 	for (let i = 0; i < domainList.length; i++) {
-		(function (i) {
+		(function (i, index) {
 			const timeOutId = setTimeout(function () {
-				test(i);
+				test(i, index);
 			}, speed * i);
 			timeOutIds.push(timeOutId);
-		})(i);
+		})(i, proxiesArrIndex);
+		proxiesArrIndex++;
+		if (proxiesArrIndex === proxiesArr.length) {
+			proxiesArrIndex = 0;
+		}
 	}
 }
 
