@@ -182,8 +182,6 @@ async function test (i, indexP) {
 		}
 	}
 
-	console.log(config.proxy.host);
-
 	axios
 		.get(urlString, config)
 		.then((res) => {
